@@ -3,7 +3,6 @@ import { useState } from "react";
 import Pokemon from "../components/Pokemon";
 
 export default function Home({ initialPokemon }) {
-  console.log(initialPokemon);
   const [pokemon, setPokemon] = useState(initialPokemon);
   const [offset, setOffet] = useState(0);
 
@@ -16,8 +15,8 @@ export default function Home({ initialPokemon }) {
   };
 
   return (
-    <Layout>
-      <div className="grid grid-col-1 md:grid-cols-3 lg:grid-cols-5 gap-10">
+    <Layout title={"PokeDev"}>
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-10">
         {pokemon.results.map((monster, index) => (
           <Pokemon key={index} pokemon={monster} index={index + offset} />
         ))}
@@ -29,21 +28,21 @@ export default function Home({ initialPokemon }) {
           className="disabled:bg-gray-500 px-3 py-1 bg-slate-900"
           onClick={() => fetchPokemon(pokemon.previous, false)}
         >
-          Prev
+          prev
         </button>
         <button
           disabled={!pokemon.next}
           className="disabled:bg-gray-500 px-3 py-1 bg-slate-900"
           onClick={() => fetchPokemon(pokemon.next, true)}
         >
-          Next
+          next
         </button>
       </div>
     </Layout>
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getStaticProps(context) {
   const response = await fetch("https://pokeapi.co/api/v2/pokemon");
   const initialPokemon = await response.json();
 
